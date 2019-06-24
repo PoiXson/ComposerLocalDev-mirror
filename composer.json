@@ -1,0 +1,46 @@
+{
+	"name":        "pxn/composerlocaldev",
+	"description": "Links vendor data to a local workspace",
+	"type":        "composer-plugin",
+	"homepage":    "http://poixson.com/",
+	"license":     "GPL-3.0",
+	"keywords": [
+		"dev", "symlink"
+	],
+	"support": {
+		"source": "http://git.poixson.com/summary/pxn!ComposerLocalDev.git",
+		"issues": "http://git.poixson.com/tickets/pxn!ComposerLocalDev.git",
+		"irc":    "irc://irc.esper.net/poixson"
+	},
+	"authors": [{
+		"name":  "lorenzop",
+		"role":  "Developer"
+	}],
+	"autoload": {
+		"psr-4": {
+			"pxn\\ComposerLocalDev\\": "src/"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"pxn\\composerlocaldev\\tests\\":    "tests/",
+			"pxn\\composerlocaldev\\examples\\": "examples/"
+		}
+	},
+	"archive": {
+		"exclude": [
+			"tests/",
+			"examples/"
+		]
+	},
+	"extra": {
+		"class": "pxn\\ComposerLocalDev\\ComposerLocalDev"
+	},
+	"require": {
+		"composer-plugin-api": "^1.1"
+	},
+	"require-dev": {
+		"composer/composer": "^1.8",
+		"phpunit/phpunit": "8.*"
+	}
+}
