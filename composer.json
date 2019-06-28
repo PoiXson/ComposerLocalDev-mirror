@@ -34,7 +34,7 @@
 		]
 	},
 	"extra": {
-		"class": "pxn\\ComposerLocalDev\\ComposerLocalDev"
+		"class": "pxn\\ComposerLocalDev\\Plugin"
 	},
 	"require": {
 		"composer-plugin-api": "^1.1"
