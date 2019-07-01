@@ -103,7 +103,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			$p = "$cwd/$namespacePath";
 			// vendor/package.original already exists
 			if (\is_dir("$p.original")) {
-				$this->error("Directory already exists: "$p.original"", __FILE__, __LINE__);
+				$this->error("Directory already exists: $p.original", __FILE__, __LINE__);
 				exit(1);
 			}
 			// rename to dir.original
@@ -135,7 +135,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 					$this->error("Failed to remove symlink: $namespacePath", __FILE__, __LINE__);
 					exit(1);
 				}
-				$this->info("Removed symlink, restoring vendor.. $namespacePath");
 			}
 			// restore vendor
 			if ( ! \is_dir($p) ) {
