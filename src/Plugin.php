@@ -101,6 +101,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			if ( ! \is_dir("$cwd/$namespacePath") ) continue;
 			$this->info("Found local dev, making symlink.. $namespacePath => $devPath");
 			$p = "$cwd/$namespacePath";
+			// vendor/package.original already exists
+			if (\is_dir("$p.original")) {
+				$this->error("Directory already exists: "$p.original"", __FILE__, __LINE__);
+				exit(1);
+			}
 			// rename to dir.original
 			if ( ! \rename($p, "$p.original") ) {
 				$this->error("Failed to rename directory: $namespacePath", __FILE__, __LINE__);
