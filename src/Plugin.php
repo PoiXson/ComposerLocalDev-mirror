@@ -96,8 +96,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$cwd = \getcwd();
 		foreach ($paths as $namespace => $devPath) {
 			if (empty($devPath)) continue;
+			// check dev path exists
 			if ( ! \is_dir("$cwd/$devPath") ) continue;
 			$namespacePath = self::vendorPathFromNamespace($namespace);
+			// check vendor path exists
+			if ( ! \is_dir("$cwd/$namespacePath") ) continue;
 			$this->info("Found local dev, making symlink.. $namespacePath => $devPath");
 			$p = "$cwd/$namespacePath";
 			// rename to dir.original
