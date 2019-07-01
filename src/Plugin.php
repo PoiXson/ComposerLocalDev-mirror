@@ -14,8 +14,6 @@ use Composer\Script\ScriptEvents;
 use Composer\Plugin\PluginInterface;
 use Composer\EventDispatcher\EventSubscriberInterface;
 
-use pxn\ComposerLocalDev\Config;
-
 
 
 class Plugin implements PluginInterface, EventSubscriberInterface {
