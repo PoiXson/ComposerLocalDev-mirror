@@ -99,7 +99,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			$namespacePath = self::vendorPathFromNamespace($namespace);
 			// check vendor path exists
 			if ( ! \is_dir("$cwd/$namespacePath") ) continue;
-			$this->info("Found local dev, making symlink.. $namespacePath => $devPath");
+			$this->io->writeError(" [LocalDev] Found local dev, creating symlink.. <info>$namespacePath</info> => <info>$devPath</info>");
 			$p = "$cwd/$namespacePath";
 			// vendor/package.original already exists
 			if (\is_dir("$p.original")) {
@@ -143,7 +143,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 						$this->error("Failed to rename directory: $namespacePath.original", __FILE__, __LINE__);
 						exit(1);
 					}
-					$this->info("Restored vendor: $namespacePath");
+					$this->io->writeError(" [LocalDev] Removed symlink and restored vendor: <info>$namespacePath</info>");
 				}
 			}
 		}
@@ -168,7 +168,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 
 	public function info($msg) {
-		$this->io->writeError("<info> [LocalDev] $msg</info>");
+		$this->io->writeError(" [LocalDev] <info> [LocalDev] $msg</info>");
 	}
 	public function debug($msg, $_file, $_line) {
 		$this->io->debug(" [LocalDev] $_file:$_line - $msg");
