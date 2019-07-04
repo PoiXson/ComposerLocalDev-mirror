@@ -1,9 +1,12 @@
 .git/
+.svn/
+.hg/
+.cvs/
+_*
 
 debug
 DEBUG
 .debug
-error_log
 
 pxnloader.php
 .htdb*
@@ -11,18 +14,35 @@ config.php
 public/static/bootstrap
 public/static/jquery
 data/
+error_log
+log/
+logs/
+*.log
+*.err
 
+tmp/
+temp/
+cache/
 .cache/
 .*_cache/
+.twig_cache/
 .backups/
+*.lock
+!composer.lock
 
 bin/
+libs/
+ext/
 target/
 vendor/
 coverage/
 rpmbuild-root/
 out/
 build/
+Makefile
+Makefile.fragments
+Makefile.objects
+.externalToolBuilders/
 
 composer.phar
 auth.json
@@ -37,14 +57,25 @@ auth.json
 *.iml
 *.idea
 *.jar
+*.gz
+*.tar
+*.tgz
+*.zip
+*.rar
 *.rpm
+*.o
+*.a
+*.obj
+*.dll
 *.deb
 *.apk
 *.war
 *.ear
-*.zip
 *.exe
+*.hex
+*.db
 *.out
+*.output
 *.swp
 .*.swp
 *~
