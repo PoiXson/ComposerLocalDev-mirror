@@ -33,35 +33,34 @@ class Config {
 
 
 	public function load() {
-		$data = $this->readFromFile();
 		$this->paths = [];
-		if (isset($data['paths'])) {
-			$this->paths = $data['paths'];
+		$array = $this->readFromFile();
+		if ($array === FALSE) return;
+		if (isset($array['paths'])) {
+			$this->paths = $array['paths'];
 		}
 	}
 	public function save() {
-		$data = $this->readFromFile();
-		$data['paths'] = $this->paths;
-		$this->writeToFile($data);
+		$array = $this->readFromFile();
+		if ($array === FALSE) return;
+		$array['paths'] = $this->paths;
+		$this->writeToFile($array);
 	}
 
 
 
 	protected function readFromFile() {
-		return
-			\json_decode(
-				\file_get_contents($this->configFile),
-				TRUE
-			);
+		$data = \file_get_contents($this->configFile);
+		if ($data === FALSE) return FALSE;
+		return \json_decode($data, TRUE);
 	}
-	protected function writeToFile(array $data) {
-		\file_put_contents(
-			$this->configFile,
+	protected function writeToFile(array $array) {
+		$data =
 			\json_encode(
-				$data,
+				$array,
 				\JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
-			)
-		);
+			);
+		\file_put_contents($this->configFile, $data);
 	}
 
 
