@@ -13,7 +13,7 @@ namespace pxn\ComposerLocalDev;
 class Config {
 
 	protected $configFile;
-	protected $paths;
+	protected $paths = [];
 
 
 
@@ -32,28 +32,32 @@ class Config {
 
 
 
+
+
+
 	public function load() {
 		$this->paths = [];
-		$array = $this->readFromFile();
-		if ($array === FALSE) return;
+		if ( ! \is_file($this->configFile) )
+			return;
+		$data = \file_get_contents($this->configFile);
+		if ($data === FALSE)
+			return;
+		$array = \json_decode($data, TRUE);
+		if ($array === FALSE)
+			return;
 		if (isset($array['paths'])) {
 			$this->paths = $array['paths'];
 		}
 	}
+
+
+
 //	public function save() {
 //		$array = $this->readFromFile();
 //		if ($array === FALSE) return;
 //		$array['paths'] = $this->paths;
 //		$this->writeToFile($array);
 //	}
-
-
-
-	protected function readFromFile() {
-		$data = \file_get_contents($this->configFile);
-		if ($data === FALSE) return FALSE;
-		return \json_decode($data, TRUE);
-	}
 //	protected function writeToFile(array $array) {
 //		$data =
 //			\json_encode(
