@@ -40,12 +40,12 @@ class Config {
 			$this->paths = $array['paths'];
 		}
 	}
-	public function save() {
-		$array = $this->readFromFile();
-		if ($array === FALSE) return;
-		$array['paths'] = $this->paths;
-		$this->writeToFile($array);
-	}
+//	public function save() {
+//		$array = $this->readFromFile();
+//		if ($array === FALSE) return;
+//		$array['paths'] = $this->paths;
+//		$this->writeToFile($array);
+//	}
 
 
 
@@ -54,14 +54,14 @@ class Config {
 		if ($data === FALSE) return FALSE;
 		return \json_decode($data, TRUE);
 	}
-	protected function writeToFile(array $array) {
-		$data =
-			\json_encode(
-				$array,
-				\JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
-			);
-		\file_put_contents($this->configFile, $data);
-	}
+//	protected function writeToFile(array $array) {
+//		$data =
+//			\json_encode(
+//				$array,
+//				\JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
+//			);
+//		\file_put_contents($this->configFile, $data);
+//	}
 
 
 
