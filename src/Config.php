@@ -32,6 +32,9 @@ class Config {
 
 
 
+	public function isDev() {
+		return (\count($this->paths) > 0);
+	}
 
 
 

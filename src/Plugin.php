@@ -33,6 +33,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		// load config
 		$this->config = new Config('../localdev.json');
 		$this->config->load();
+		if ($this->config->isDev()) {
+			$this->info('<info>Development mode</info>');
+		}
 	}
 
 
