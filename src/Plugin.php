@@ -68,11 +68,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 
 	public function apply() {
-		// dev/production
-		if ( ! $this->composer->getPackage()->isDev() ) {
-			$this->info('Skipping symlinking due to: not dev');
-			return;
-		}
 		// optimize-autoloader
 		$optimize = FALSE;
 		{
