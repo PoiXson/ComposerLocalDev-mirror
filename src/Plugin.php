@@ -72,18 +72,18 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$optimize = FALSE;
 		{
 			$input  = $this->getInput();
-			$config = $this->composer->getConfig();
+			$composerConfig = $this->composer->getConfig();
 			if ($input->getOption('optimize-autoloader')) {
 				$this->debug('optimize-autoloader enabled by console', __FILE__, __LINE__);
 				$optimize = TRUE;
 			} else
-			if ($config->get('optimize-autoloader')) {
-				$this->debug('optimize-autoloader enabled by config', __FILE__, __LINE__);
+			if ($composerConfig->get('optimize-autoloader')) {
+				$this->debug('optimize-autoloader enabled by composer config', __FILE__, __LINE__);
 				$optimize = TRUE;
 			}
 			$this->debug('Optimize: '.($optimize ? 'yes' : 'no'), __FILE__, __LINE__);
 			if ($optimize) {
-				$this->info('Skipping symlinking due to: optimize');
+				$this->info('<info>Skipping symlinking due to: optimize</info>');
 				return;
 			}
 		}
@@ -97,7 +97,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			$namespacePath = self::vendorPathFromNamespace($namespace);
 			// check vendor path exists
 			if ( ! \is_dir("$cwd/$namespacePath") ) continue;
-			$this->io->writeError(" [LocalDev] Found local dev, creating symlink.. <info>$namespacePath</info> => <info>$devPath</info>");
+			$this->info("Symlinking.. <info>$namespacePath</info> => <info>$devPath</info>");
 			$p = "$cwd/$namespacePath";
 			// vendor/package.original already exists
 			if (\is_dir("$p.original")) {
@@ -141,7 +141,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 						$this->error("Failed to rename directory: $namespacePath.original", __FILE__, __LINE__);
 						exit(1);
 					}
-					$this->io->writeError(" [LocalDev] Removed symlink and restored vendor: <info>$namespacePath</info>");
+					$this->info("Restored vendor: <info>$namespacePath</info>");
 				}
 			}
 		}
@@ -166,13 +166,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 
 	public function info($msg) {
-		$this->io->writeError(" [LocalDev] <info> [LocalDev] $msg</info>");
+		$this->io->writeError("[LocalDev] $msg");
 	}
 	public function debug($msg, $_file, $_line) {
-		$this->io->debug(" [LocalDev] $_file:$_line - $msg");
+		$this->io->debug("[LocalDev] $_file:$_line - $msg");
 	}
 	public function error($msg, $_file, $_line) {
-		$this->io->error(" [LocalDev] $_file:$_line - $msg");
+		$this->io->error("[LocalDev] $_file:$_line - $msg");
 	}
 
 
