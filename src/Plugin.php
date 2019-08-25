@@ -68,26 +68,27 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 
 	public function apply() {
-		// optimize-autoloader
 		$optimize = FALSE;
 		{
 			$input  = $this->getInput();
 			$composerConfig = $this->composer->getConfig();
+			// optimize-autoloader
 			if ($input->getOption('optimize-autoloader')) {
-				$this->debug('optimize-autoloader enabled by console', __FILE__, __LINE__);
+				$this->info('<info>optimize-autoloader enabled by console</info>');
 				$optimize = TRUE;
 			} else
 			if ($composerConfig->get('optimize-autoloader')) {
-				$this->debug('optimize-autoloader enabled by composer config', __FILE__, __LINE__);
+				$this->info('<info>optimize-autoloader enabled by composer config</info>');
 				$optimize = TRUE;
 			}
-			$this->debug('Optimize: '.($optimize ? 'yes' : 'no'), __FILE__, __LINE__);
+			$this->debug('Optimize: '.($optimize ? 'yes' : 'no'));
 			if ($optimize) {
-				$this->info('<info>Skipping symlinking due to: optimize</info>');
+				$this->info('<info>Skipping symlinking</info>');
 				return;
 			}
 		}
 		// dev paths
+		$first = true;
 		$paths = $this->config->getPaths();
 		$cwd = \getcwd();
 		foreach ($paths as $namespace => $devPath) {
@@ -97,6 +98,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			$namespacePath = self::vendorPathFromNamespace($namespace);
 			// check vendor path exists
 			if ( ! \is_dir("$cwd/$namespacePath") ) continue;
+			if ($first) {
+				$first = FALSE;
+				$this->info("<info>Creating symlinks to local dev..</info>");
+			}
 			$this->info("Symlinking.. <info>$namespacePath</info> => <info>$devPath</info>");
 			$p = "$cwd/$namespacePath";
 			// vendor/package.original already exists
@@ -168,8 +173,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 	public function info($msg) {
 		$this->io->writeError("[LocalDev] $msg");
 	}
-	public function debug($msg, $_file, $_line) {
-		$this->io->debug("[LocalDev] $_file:$_line - $msg");
+	public function debug($msg, $_file=NULL, $_line=NULL) {
+		if ($_file === NULL || $_line === NULL) {
+			$this->io->debug("[LocalDev] $msg");
+		} else {
+			$this->io->debug("[LocalDev] $_file:$_line - $msg");
+		}
 	}
 	public function error($msg, $_file, $_line) {
 		$this->io->error("[LocalDev] $_file:$_line - $msg");
