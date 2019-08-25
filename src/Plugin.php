@@ -72,6 +72,15 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		{
 			$input  = $this->getInput();
 			$composerConfig = $this->composer->getConfig();
+			// classmap-authoritative
+			if ($input->getOption('classmap-authoritative')) {
+				$this->info('<info>classmap-authoritative enabled by console</info>');
+				$optimize = TRUE;
+			} else
+			if ($composerConfig->get('classmap-authoritative')) {
+				$this->info('<info>classmap-authoritative enabled by composer config</info>');
+				$optimize = TRUE;
+			}
 			// optimize-autoloader
 			if ($input->getOption('optimize-autoloader')) {
 				$this->info('<info>optimize-autoloader enabled by console</info>');
