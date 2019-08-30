@@ -68,6 +68,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 
 	public function apply() {
+/*
 		$optimize = FALSE;
 		{
 			$input  = $this->getInput();
@@ -96,6 +97,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 				return;
 			}
 		}
+*/
 		// dev paths
 		$first = true;
 		$paths = $this->config->getPaths();
