@@ -23,6 +23,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 	protected $repoManager;
 
 	protected $config;
+	protected $isDev;
 
 
 
@@ -33,7 +34,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		// load config
 		$this->config = new Config('../localdev.json');
 		$this->config->load();
-		if ($this->config->isDev()) {
+		$this->isDev = $this->config->isDev();
+		if ($this->isDev) {
 			$this->info('<info>Development mode</info>');
 		}
 	}
@@ -68,6 +70,10 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 
 	public function apply() {
+		if ($this->isDev()) {
+			$this->info('<info>Skipping symlinking</info>');
+			return;
+		}
 /*
 		$optimize = FALSE;
 		{
@@ -177,6 +183,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$reflectProperty = $reflectObject->getProperty('input');
 		$reflectProperty->setAccessible(TRUE);
 		return $reflectProperty->getValue($this->io);
+	}
+
+
+
+	public function isDev() {
+		return $this->isDev;
 	}
 
 
