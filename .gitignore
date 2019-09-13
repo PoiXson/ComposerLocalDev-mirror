@@ -13,6 +13,7 @@ pxnloader.php
 config.php
 public/static/bootstrap
 public/static/jquery
+public/static/bootswatch
 data/
 error_log
 log/
@@ -36,7 +37,7 @@ ext/
 target/
 vendor/
 coverage/
-rpmbuild-root/
+rpmbuild/
 out/
 build/
 Makefile
