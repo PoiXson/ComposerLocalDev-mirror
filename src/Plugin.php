@@ -70,7 +70,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 
 	public function apply() {
-		if ($this->isDev()) {
+		if ( ! $this->isDev() ) {
 			$this->info('<info>Skipping symlinking</info>');
 			return;
 		}
