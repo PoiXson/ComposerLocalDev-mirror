@@ -1,0 +1,76 @@
+ComposerLocalDev - Links vendor data to a local workspace
+
+
+2020-02-15 - 1.14
+=================
+* fixed bug causing error message: dev option does not exist
+
+
+2019-09-21 - 1.12
+=================
+* testing isDev() function
+
+
+2019-09-21 - 1.11
+=================
+* testing isDev() function
+
+
+2019-09-14 - 1.10
+=================
+* testing isDev() function
+
+
+2019-09-13 - 1.9
+================
+* testing isDev() function
+
+
+2019-09-05 - 1.8
+================
+* added and testing isDev() function
+
+
+2019-08-31 - 1.7
+================
+* testing optimize options
+
+
+2019-08-25 - 1.6
+================
+* more improvements to logging messages
+* added check for --classmap-authoritative
+* testing optimize options
+
+
+2019-08-12 - 1.5
+================
+* more improvements to logging messages
+* testing isDev() function
+* more code cleanup
+
+
+2019-08-11 - 1.4
+================
+* fixed bug if localdev.json file doesn't exist
+
+
+2019-07-04 - 1.3
+================
+* more improvements to logging messages
+
+
+2019-07-01 - 1.2
+================
+* fixed logging messages
+* fixed bug if package.original directory already exists
+
+
+2019-07-01 - 1.1
+================
+* fixed bug - check vendor path exists
+
+
+2019-06-29 - 1.0
+================
+* Initial release to start testing
