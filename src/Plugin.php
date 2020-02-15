@@ -187,10 +187,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 	public function isDev() {
 		$input  = $this->getInput();
-		if ($input->getOption('dev'))
-			return TRUE;
-		if ($input->getOption('no-dev'))
-			return FALSE;
+		if ($input->hasOption('dev')) {
+			if ($input->getOption('dev')) {
+				return TRUE;
+			}
+		}
+		if ($input->hasOption('no-dev')) {
+			if ($input->getOption('no-dev')) {
+				return FALSE;
+			}
+		}
 		return ($this->config->isDev() != FALSE);
 	}
 
