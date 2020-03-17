@@ -33,14 +33,17 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		// load config
 		$configFileName = 'localdev.json';
 		$configPath = '';
-		for ($i=0; $i<3; $i++) {
-			$configPath = str_repeat('../', $i).$configFileName;
+		for ($depth=0; $depth<3; $depth++) {
+			$configPath = str_repeat('../', $depth).$configFileName;
 			if (\file_exists($configPath)) {
 				break;
 			}
 			$configPath = '';
 		}
-		$this->config = new Config($configPath);
+		if (empty($configPath)) {
+			$depth = -1;
+		}
+		$this->config = new Config($configPath, $depth);
 		$this->config->load();
 		if ($this->isDev()) {
 			$this->info('<info>Development mode</info>');
@@ -81,6 +84,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			$this->info('<info>Skipping symlinking</info>');
 			return;
 		}
+//TODO
 /*
 		$optimize = FALSE;
 		{
@@ -115,6 +119,18 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$first = true;
 		$paths = $this->config->getPaths();
 		$cwd = \getcwd();
+		{
+			$depth = $this->config->getDepth();
+			if ($depth > 0) {
+				$cwd = $cwd . \str_repeat('/..',$this->config->getDepth());
+			}
+			unset($depth);
+		}
+		$cwd = \realpath($cwd);
+		if (empty($cwd)) {
+			$this->error("Failed to find base directory", __FILE__, __LINE__);
+			return;
+		}
 		foreach ($paths as $namespace => $devPath) {
 			if (empty($devPath)) continue;
 			// check dev path exists

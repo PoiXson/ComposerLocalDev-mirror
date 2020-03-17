@@ -14,11 +14,13 @@ class Config {
 
 	protected $configFile;
 	protected $paths = [];
+	protected $depth = 0;
 
 
 
-	public function __construct($configFile) {
+	public function __construct($configFile, ?int $depth=0) {
 		$this->configFile = $configFile;
+		$this->depth = $depth;
 	}
 
 
@@ -28,6 +30,12 @@ class Config {
 	}
 	public function setPaths(array $paths) {
 		$this->paths = $paths;
+	}
+
+
+
+	public function getDepth(): int {
+		return $this->depth;
 	}
 
 
@@ -49,7 +57,9 @@ class Config {
 		if ($array === FALSE)
 			return;
 		if (isset($array['paths'])) {
-			$this->paths = $array['paths'];
+			foreach ($array['paths'] as $namespace => $devPath) {
+				$this->paths[$namespace] = \str_repeat('../', $this->depth).$devPath;
+			}
 		}
 	}
 
