@@ -25,6 +25,12 @@ class Config {
 
 
 
+	public function getConfigPath(): string {
+		return $this->configFile;
+	}
+
+
+
 	public function getPaths() {
 		return $this->paths;
 	}

@@ -47,6 +47,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$this->config->load();
 		if ($this->isDev()) {
 			$this->info('<info>Development mode</info>');
+			$this->debug('Found localdev file: '.$this->config->getConfigPath());
 		}
 	}
 
