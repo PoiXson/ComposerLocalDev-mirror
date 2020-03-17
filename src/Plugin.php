@@ -31,7 +31,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$this->io = $io;
 		$this->repoManager = $composer->getRepositoryManager();
 		// load config
-		$this->config = new Config('../localdev.json');
+		$configFileName = 'localdev.json';
+		$configPath = '';
+		for ($i=0; $i<3; $i++) {
+			$configPath = str_repeat('../', $i).$configFileName;
+			if (\file_exists($configPath)) {
+				break;
+			}
+			$configPath = '';
+		}
+		$this->config = new Config($configPath);
 		$this->config->load();
 		if ($this->isDev()) {
 			$this->info('<info>Development mode</info>');
