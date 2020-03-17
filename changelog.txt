@@ -1,6 +1,11 @@
 ComposerLocalDev - Links vendor data to a local workspace
 
 
+2020-03-17 - 1.17
+=================
+* reverted a few changes from 1.16 to fix workspace paths
+
+
 2020-03-17 - 1.16
 =================
 * fixes to properly find workspace base path
