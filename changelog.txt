@@ -1,7 +1,7 @@
 ComposerLocalDev - Links vendor data to a local workspace
 
 
-2020-12-23 - 1.18
+2020-12-23 - 1.19
 =================
 * updated to composer-plugin-api 2.0.0
 
