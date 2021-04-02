@@ -1,11 +1,11 @@
 {
 	"name":        "pxn/composerlocaldev",
-	"description": "Links vendor data to a local workspace",
+	"description": "Symlink vendor data to your local workspace",
 	"type":        "composer-plugin",
-	"homepage":    "http://poixson.com/",
+	"homepage":    "https://poixson.com/",
 	"license":     "GPL-3.0",
 	"keywords": [
-		"dev", "symlink"
+		"dev", "symlink", "local", "workspace"
 	],
 	"support": {
 		"source": "http://git.poixson.com/summary/pxn!ComposerLocalDev.git",
