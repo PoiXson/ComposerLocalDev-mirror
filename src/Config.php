@@ -11,9 +11,9 @@ namespace pxn\ComposerLocalDev;
 
 class Config {
 
-	protected $config_file;
-	protected $paths = [];
-	protected $depth = 0;
+	protected string $config_file;
+	protected array  $paths = [];
+	protected int    $depth = 0;
 
 
 
@@ -30,7 +30,7 @@ class Config {
 
 
 
-	public function getPaths(): string {
+	public function getPaths(): array {
 		return $this->paths;
 	}
 	public function setPaths(array $paths): void {

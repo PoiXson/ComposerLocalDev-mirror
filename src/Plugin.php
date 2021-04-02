@@ -19,11 +19,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 	const LOCAL_DEV_CONFIG = 'localdev.json';
 
-	protected $composer;
-	protected $io;
+	protected Composer $composer;
+	protected IOInterface $io;
 	protected $repoManager;
 
-	protected $config;
+	protected Config $config;
 
 
 
@@ -41,7 +41,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		}
 		if (empty($config_path))
 			$depth = 0;
-		$this->config = new Config(config_file: $config_path, depth: $depth);
+		$this->config = new Config($config_path, $depth);
 		$this->config->load();
 		if ($this->isDev()) {
 			$this->info('<info>Development mode</info>');
