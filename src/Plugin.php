@@ -17,6 +17,8 @@ use Composer\EventDispatcher\EventSubscriberInterface;
 
 class Plugin implements PluginInterface, EventSubscriberInterface {
 
+	const LOCAL_DEV_CONFIG = 'localdev.json';
+
 	protected $composer;
 	protected $io;
 	protected $repoManager;
@@ -30,19 +32,16 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$this->io = $io;
 		$this->repoManager = $composer->getRepositoryManager();
 		// load config
-		$configFileName = 'localdev.json';
-		$configPath = '';
+		$config_path = '';
 		for ($depth=0; $depth<3; $depth++) {
-			$configPath = str_repeat('../', $depth).$configFileName;
-			if (\file_exists($configPath)) {
+			$config_path = \str_repeat('../', $depth).self::LOCAL_DEV_CONFIG;
+			if (\file_exists($config_path))
 				break;
-			}
-			$configPath = '';
+			$config_path = '';
 		}
-		if (empty($configPath)) {
-			$depth = -1;
-		}
-		$this->config = new Config($configPath, $depth);
+		if (empty($config_path))
+			$depth = 0;
+		$this->config = new Config(config_file: $config_path, depth: $depth);
 		$this->config->load();
 		if ($this->isDev()) {
 			$this->info('<info>Development mode</info>');
@@ -61,12 +60,12 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			ScriptEvents::PRE_INSTALL_CMD  => ['handleEvent', \PHP_INT_MAX],
 			ScriptEvents::PRE_UPDATE_CMD   => ['handleEvent', \PHP_INT_MAX],
 			ScriptEvents::POST_INSTALL_CMD => ['handleEvent', \PHP_INT_MIN],
-			ScriptEvents::POST_UPDATE_CMD  => ['handleEvent', \PHP_INT_MIN]
+			ScriptEvents::POST_UPDATE_CMD  => ['handleEvent', \PHP_INT_MIN],
 		];
 	}
-	public function handleEvent($scriptEvent) {
-		$eventName = $scriptEvent->getName();
-		switch ($eventName) {
+	public function handleEvent($script_event): void {
+		$event_name = $script_event->getName();
+		switch ($event_name) {
 		case ScriptEvents::PRE_INSTALL_CMD:
 		case ScriptEvents::PRE_UPDATE_CMD:
 			$this->restore();
@@ -76,7 +75,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			$this->apply();
 			break;
 		default:
-			$this->error("Unknown event: $eventName", __FILE__, __LINE__);
+			$this->error('Unknown event: '.$event_name, __FILE__, __LINE__);
 			exit(1);
 		}
 	}
@@ -88,29 +87,29 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			$this->info('<info>Skipping symlinking</info>');
 			return;
 		}
-//TODO
+//TODO: remove this, not needed
 /*
-		$optimize = FALSE;
+		$optimize = false;
 		{
 			$input  = $this->getInput();
 			$composerConfig = $this->composer->getConfig();
 			// classmap-authoritative
 			if ($input->getOption('classmap-authoritative')) {
 				$this->info('<info>classmap-authoritative enabled by console</info>');
-				$optimize = TRUE;
+				$optimize = true;
 			} else
 			if ($composerConfig->get('classmap-authoritative')) {
 				$this->info('<info>classmap-authoritative enabled by composer config</info>');
-				$optimize = TRUE;
+				$optimize = true;
 			}
 			// optimize-autoloader
 			if ($input->getOption('optimize-autoloader')) {
 				$this->info('<info>optimize-autoloader enabled by console</info>');
-				$optimize = TRUE;
+				$optimize = true;
 			} else
 			if ($composerConfig->get('optimize-autoloader')) {
 				$this->info('<info>optimize-autoloader enabled by composer config</info>');
-				$optimize = TRUE;
+				$optimize = true;
 			}
 			$this->debug('Optimize: '.($optimize ? 'yes' : 'no'));
 			if ($optimize) {
@@ -123,32 +122,33 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$first = true;
 		$paths = $this->config->getPaths();
 		$cwd = \getcwd();
-		foreach ($paths as $namespace => $devPath) {
-			if (empty($devPath)) continue;
+		foreach ($paths as $namespace => $dev_path) {
+			if (empty($dev_path)) continue;
 			// check dev path exists
-			if ( ! \is_dir("$cwd/$devPath") ) continue;
-			$namespacePath = self::vendorPathFromNamespace($namespace);
+			if ( ! \is_dir("$cwd/$dev_path") ) continue;
+			$namespace_path = self::VendorPathFromNamespace($namespace);
 			// check vendor path exists
-			if ( ! \is_dir("$cwd/$namespacePath") ) continue;
+			if ( ! \is_dir("$cwd/$namespace_path") ) continue;
 			if ($first) {
-				$first = FALSE;
+				$first = false;
 				$this->info("<info>Creating symlinks to local dev..</info>");
 			}
-			$this->info("Symlinking.. <info>$namespacePath</info> => <info>$devPath</info>");
-			$p = "$cwd/$namespacePath";
+			$this->info("Symlinking.. <info>$namespace_path</info> => <info>$dev_path</info>");
+			$p = "$cwd/$namespace_path";
 			// vendor/package.original already exists
-			if (\is_dir("$p.original")) {
-				$this->error("Directory already exists: $p.original", __FILE__, __LINE__);
+			$path_original = $p.'.original';
+			if (\is_dir($path_original)) {
+				$this->error("Directory already exists: $path_original", __FILE__, __LINE__);
 				exit(1);
 			}
 			// rename to dir.original
-			if ( ! \rename($p, "$p.original") ) {
-				$this->error("Failed to rename directory: $namespacePath", __FILE__, __LINE__);
+			if ( ! \rename($p, $path_original) ) {
+				$this->error("Failed to rename directory: $namespace_path", __FILE__, __LINE__);
 				exit(1);
 			}
 			// make symlink to local dev
 			\symlink(
-				\realpath("$cwd/$devPath"),
+				\realpath("$cwd/$dev_path"),
 				$p
 			);
 		}
@@ -160,25 +160,26 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		// dev paths
 		$paths = $this->config->getPaths();
 		$cwd = \getcwd();
-		if (empty($cwd)) exit(1);
-		foreach ($paths as $namespace => $devPath) {
-			$namespacePath = self::vendorPathFromNamespace($namespace);
-			$p = "$cwd/$namespacePath";
+		if (empty($cwd))
+			exit(1);
+		foreach ($paths as $namespace => $dev_path) {
+			$namespace_path = self::VendorPathFromNamespace($namespace);
+			$p = "$cwd/$namespace_path";
 			// remove symlink
 			if (\is_link($p)) {
 				if ( ! \unlink($p) ) {
-					$this->error("Failed to remove symlink: $namespacePath", __FILE__, __LINE__);
+					$this->error("Failed to remove symlink: $namespace_path", __FILE__, __LINE__);
 					exit(1);
 				}
 			}
 			// restore vendor
 			if ( ! \is_dir($p) ) {
-				if (\is_dir("$p.original")) {
-					if ( ! \rename("$p.original", $p) ) {
-						$this->error("Failed to rename directory: $namespacePath.original", __FILE__, __LINE__);
+				if (\is_dir($p.'.original')) {
+					if ( ! \rename($p.'.original', $p) ) {
+						$this->error("Failed to rename directory: {$namespace_path}.original", __FILE__, __LINE__);
 						exit(1);
 					}
-					$this->info("Restored vendor: <info>$namespacePath</info>");
+					$this->info("Restored vendor: <info>$namespace_path</info>");
 				}
 			}
 		}
@@ -186,9 +187,9 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 
 
-	public static function vendorPathFromNamespace($namespace) {
+	public static function VendorPathFromNamespace(string $namespace): string {
 		$path = \str_replace('\\', '/', $namespace);
-		return "vendor/$path";
+		return 'vendor/'.$path;
 	}
 
 
@@ -196,46 +197,44 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 	public function getInput() {
 		$reflectObject = new \ReflectionObject($this->io);
 		$reflectProperty = $reflectObject->getProperty('input');
-		$reflectProperty->setAccessible(TRUE);
+		$reflectProperty->setAccessible(true);
 		return $reflectProperty->getValue($this->io);
 	}
 
 
 
-	public function isDev() {
-		$input  = $this->getInput();
+	public function isDev(): bool {
+		$input = $this->getInput();
 		if ($input->hasOption('dev')) {
-			if ($input->getOption('dev')) {
-				return TRUE;
-			}
+			if ($input->getOption('dev'))
+				return true;
 		}
 		if ($input->hasOption('no-dev')) {
-			if ($input->getOption('no-dev')) {
-				return FALSE;
-			}
+			if ($input->getOption('no-dev'))
+				return false;
 		}
-		return ($this->config->isDev() != FALSE);
+		return ($this->config->isDev() != false);
 	}
 
 
 
-	public function info($msg) {
-		$this->io->writeError("[LocalDev] $msg");
+	public function info(string $msg): void {
+		$this->io->writeError('[LocalDev] '.$msg);
 	}
-	public function debug($msg, $_file=NULL, $_line=NULL) {
-		if ($_file === NULL || $_line === NULL) {
-			$this->io->debug("[LocalDev] $msg");
+	public function debug(string $msg, string $_file=null, int $_line=-1): void {
+		if ($_file === null || $_line === null) {
+			$this->io->debug('[LocalDev] '.$msg);
 		} else {
 			$this->io->debug("[LocalDev] $_file:$_line - $msg");
 		}
 	}
-	public function error($msg, $_file, $_line) {
+	public function error(string $msg, string $_file, int $_line): void {
 		$this->io->error("[LocalDev] $_file:$_line - $msg");
 	}
 
 
 
-	public static function dump($var) {
+	public static function dump($var): void {
 		echo "--DUMP--\n";
 		\var_dump($var);
 		echo "--------\n";

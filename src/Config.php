@@ -11,29 +11,29 @@ namespace pxn\ComposerLocalDev;
 
 class Config {
 
-	protected $configFile;
+	protected $config_file;
 	protected $paths = [];
 	protected $depth = 0;
 
 
 
-	public function __construct($configFile, ?int $depth=0) {
-		$this->configFile = $configFile;
-		$this->depth = $depth;
+	public function __construct(string $config_file, int $depth=0) {
+		$this->config_file = $config_file;
+		$this->depth = ($depth < 0 ? 0 : $depth);
 	}
 
 
 
 	public function getConfigPath(): string {
-		return $this->configFile;
+		return $this->config_file;
 	}
 
 
 
-	public function getPaths() {
+	public function getPaths(): string {
 		return $this->paths;
 	}
-	public function setPaths(array $paths) {
+	public function setPaths(array $paths): void {
 		$this->paths = $paths;
 	}
 
@@ -45,45 +45,28 @@ class Config {
 
 
 
-	public function isDev() {
+	public function isDev(): bool {
 		return (\count($this->paths) > 0);
 	}
 
 
 
-	public function load() {
+	public function load(): void {
 		$this->paths = [];
-		if ( ! \is_file($this->configFile) )
+		if ( ! \is_file($this->config_file) )
 			return;
-		$data = \file_get_contents($this->configFile);
-		if ($data === FALSE)
+		$data = \file_get_contents($this->config_file);
+		if ($data === false)
 			return;
-		$array = \json_decode($data, TRUE);
-		if ($array === FALSE)
+		$array = \json_decode(json: $data, associative: true);
+		if ($array === false)
 			return;
 		if (isset($array['paths'])) {
-			foreach ($array['paths'] as $namespace => $devPath) {
-				$this->paths[$namespace] = \str_repeat('../', $this->depth).$devPath;
+			foreach ($array['paths'] as $namespace => $dev_path) {
+				$this->paths[$namespace] = \str_repeat('../', $this->depth).$dev_path;
 			}
 		}
 	}
-
-
-
-//	public function save() {
-//		$array = $this->readFromFile();
-//		if ($array === FALSE) return;
-//		$array['paths'] = $this->paths;
-//		$this->writeToFile($array);
-//	}
-//	protected function writeToFile(array $array) {
-//		$data =
-//			\json_encode(
-//				$array,
-//				\JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE
-//			);
-//		\file_put_contents($this->configFile, $data);
-//	}
 
 
 
