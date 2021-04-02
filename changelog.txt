@@ -1,4 +1,4 @@
-ComposerLocalDev - Links vendor data to a local workspace
+ComposerLocalDev - Symlink vendor data to your local workspace
 
 
 2020-12-23 - 1.19

@@ -1,6 +1,6 @@
 <?php
 /*
- * PoiXson Composer Local Dev - Links vendor data to a local workspace
+ * PoiXson ComposerLocalDev - Symlink vendor data to your local workspace
  * @copyright 2019
  * @license GPL-3
  * @author lorenzo at poixson.com
@@ -13,7 +13,6 @@ use Composer\IO\IOInterface;
 use Composer\Script\ScriptEvents;
 use Composer\Plugin\PluginInterface;
 use Composer\EventDispatcher\EventSubscriberInterface;
-
 
 
 class Plugin implements PluginInterface, EventSubscriberInterface {

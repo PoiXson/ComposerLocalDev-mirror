@@ -1,13 +1,12 @@
 <?php
 /*
- * PoiXson Composer Local Dev - Links vendor data to a local workspace
+ * PoiXson ComposerLocalDev - Symlink vendor data to your local workspace
  * @copyright 2019
  * @license GPL-3
  * @author lorenzo at poixson.com
  * @link http://poixson.com/
  */
 namespace pxn\ComposerLocalDev;
-
 
 
 class Config {
