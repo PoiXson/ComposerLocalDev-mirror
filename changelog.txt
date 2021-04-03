@@ -1,6 +1,12 @@
 ComposerLocalDev - Symlink vendor data to your local workspace
 
 
+2021-04-03 - 1.22
+=================
+* added checks for authoritative and optimize
+* cache isDev() result
+
+
 2021-04-02 - 1.21
 =================
 * cleaned and updated for php 8
