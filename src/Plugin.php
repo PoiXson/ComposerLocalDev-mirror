@@ -1,10 +1,10 @@
 <?php
 /*
  * PoiXson ComposerLocalDev - Symlink vendor data to your local workspace
- * @copyright 2019
+ * @copyright 2019-2021
  * @license GPL-3
  * @author lorenzo at poixson.com
- * @link http://poixson.com/
+ * @link https://poixson.com/
  */
 namespace pxn\ComposerLocalDev;
 
