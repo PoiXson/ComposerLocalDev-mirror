@@ -48,6 +48,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		if ($this->isDev()) {
 			$this->info('<info>Development mode</info>');
 			$this->debug('Found localdev file: '.$this->config->getConfigPath());
+		} else {
+			$this->info('<info>Production mode</info>');
 		}
 	}
 	public function deactivate(Composer $composer, IOInterface $io) {
@@ -86,7 +88,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 	public function apply() {
 		if ( ! $this->isDev() ) {
-			$this->info('<info>Skipping symlinking</info>');
+			$this->info('<info>Symlinking skipped</info>');
 			return;
 		}
 //TODO: remove this, not needed
@@ -241,11 +243,13 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 
 
+/*
 	public static function dump($var): void {
 		echo "--DUMP--\n";
 		\var_dump($var);
 		echo "--------\n";
 	}
+*/
 
 
 
