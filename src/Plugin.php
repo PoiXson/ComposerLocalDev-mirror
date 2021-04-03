@@ -91,37 +91,6 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			$this->info('<info>Symlinking skipped</info>');
 			return;
 		}
-//TODO: remove this, not needed
-/*
-		$optimize = false;
-		{
-			$input  = $this->getInput();
-			$composerConfig = $this->composer->getConfig();
-			// classmap-authoritative
-			if ($input->getOption('classmap-authoritative')) {
-				$this->info('<info>classmap-authoritative enabled by console</info>');
-				$optimize = true;
-			} else
-			if ($composerConfig->get('classmap-authoritative')) {
-				$this->info('<info>classmap-authoritative enabled by composer config</info>');
-				$optimize = true;
-			}
-			// optimize-autoloader
-			if ($input->getOption('optimize-autoloader')) {
-				$this->info('<info>optimize-autoloader enabled by console</info>');
-				$optimize = true;
-			} else
-			if ($composerConfig->get('optimize-autoloader')) {
-				$this->info('<info>optimize-autoloader enabled by composer config</info>');
-				$optimize = true;
-			}
-			$this->debug('Optimize: '.($optimize ? 'yes' : 'no'));
-			if ($optimize) {
-				$this->info('<info>Skipping symlinking</info>');
-				return;
-			}
-		}
-*/
 		// dev paths
 		$first = true;
 		$paths = $this->config->getPaths();
@@ -214,6 +183,23 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 	}
 	private function _isDev(): bool {
 		$input = $this->getInput();
+		if ($input->getOption('classmap-authoritative')) {
+			$this->info('<info>classmap-authoritative enabled by console</info>');
+			return false;
+		}
+		$composerConfig = $this->composer->getConfig();
+		if ($composerConfig->get('classmap-authoritative')) {
+			$this->info('<info>classmap-authoritative enabled by config</info>');
+			return false;
+		}
+		if ($input->getOption('optimize-autoloader')) {
+			$this->info('<info>optimize-autoloader enabled by console</info>');
+			return false;
+		}
+		if ($composerConfig->get('optimize-autoloader')) {
+			$this->info('<info>optimize-autoloader enabled by config</info>');
+			return false;
+		}
 		if ($input->hasOption('dev')) {
 			if ($input->getOption('dev'))
 				return true;
