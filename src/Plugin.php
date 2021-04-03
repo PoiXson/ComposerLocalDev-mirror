@@ -25,6 +25,8 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 	protected Config $config;
 
+	protected ?bool is_dev = null;
+
 
 
 	public function activate(Composer $composer, IOInterface $io) {
@@ -204,6 +206,11 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 
 	public function isDev(): bool {
+		if ($this->is_dev === null)
+			$this->is_dev = $this->_isDev();
+		return ($this->is_dev === true);
+	}
+	private function _isDev(): bool {
 		$input = $this->getInput();
 		if ($input->hasOption('dev')) {
 			if ($input->getOption('dev'))
@@ -213,7 +220,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 			if ($input->getOption('no-dev'))
 				return false;
 		}
-		return ($this->config->isDev() != false);
+		return ($this->config->isDev() === true);
 	}
 
 
