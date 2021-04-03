@@ -25,7 +25,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 	protected Config $config;
 
-	protected ?bool is_dev = null;
+	protected ?bool $is_dev = null;
 
 
 
