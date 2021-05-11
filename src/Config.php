@@ -53,6 +53,8 @@ class Config {
 
 	public function load(): void {
 		$this->paths = [];
+		if (empty($this->config_file))
+			return;
 		if ( ! \is_file($this->config_file) )
 			return;
 		$data = \file_get_contents($this->config_file);
