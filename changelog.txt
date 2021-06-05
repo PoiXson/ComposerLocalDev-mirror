@@ -1,6 +1,12 @@
 ComposerLocalDev - Symlink vendor data to your local workspace
 
 
+2021-06-04 - 1.24
+=================
+* fixed buug - classmap-authoritative option does not exist - when using composer show
+* added check for empty config file
+
+
 2021-04-03 - 1.23
 =================
 * added checks for authoritative and optimize
