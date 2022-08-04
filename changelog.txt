@@ -1,6 +1,11 @@
 ComposerLocalDev - Symlink vendor data to your local workspace
 
 
+2022-08-03 - 1.25
+=================
+* updated composer to 2.3.0
+
+
 2021-06-04 - 1.24
 =================
 * fixed buug - classmap-authoritative option does not exist - when using composer show
