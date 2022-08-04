@@ -1,7 +1,7 @@
 <?php
 /*
  * PoiXson ComposerLocalDev - Symlink vendor data to your local workspace
- * @copyright 2019-2021
+ * @copyright 2019-2022
  * @license GPL-3
  * @author lorenzo at poixson.com
  * @link https://poixson.com/
