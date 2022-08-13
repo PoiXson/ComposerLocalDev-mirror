@@ -10,7 +10,6 @@
 	"support": {
 		"source": "http://git.poixson.com/summary/pxn!ComposerLocalDev.git",
 		"issues": "http://git.poixson.com/tickets/pxn!ComposerLocalDev.git",
-		"irc":    "irc://irc.esper.net/poixson",
 		"discord": "https://discord.gg/jHgP2a3kDx"
 	},
 	"authors": [{
