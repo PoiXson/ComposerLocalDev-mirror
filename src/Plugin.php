@@ -23,7 +23,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 	protected IOInterface $io;
 	protected $repoManager;
 
-	protected Config $config;
+	protected LocalDev_Config $config;
 
 	protected ?bool $is_dev = null;
 
@@ -43,7 +43,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		}
 		if (empty($config_path))
 			$depth = 0;
-		$this->config = new Config($config_path, $depth);
+		$this->config = new LocalDev_Config($config_path, $depth);
 		$this->config->load();
 		if ($this->isDev()) {
 			$this->info('<info>Development mode</info>');
@@ -245,7 +245,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 }
 
-class Config {
+class LocalDev_Config {
 
 	protected string $config_file;
 	protected array  $paths = [];
