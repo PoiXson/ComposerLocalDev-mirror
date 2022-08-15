@@ -1,6 +1,11 @@
 ComposerLocalDev - Symlink vendor data to your local workspace
 
 
+2022-08-15 - 1.27
+=================
+* renamed Config class to LocalDev_Config to avoid conflicts
+
+
 2022-08-15 - 1.26
 =================
 * moved Config class into Plugin.php
