@@ -1,6 +1,12 @@
 ComposerLocalDev - Symlink vendor data to your local workspace
 
 
+2022-08-15 - 1.26
+=================
+* moved Config class into Plugin.php
+* updated dependencies
+
+
 2022-08-03 - 1.25
 =================
 * updated composer to 2.3.0
