@@ -14,7 +14,6 @@ public/static/bootstrap
 public/static/bootstrap-icons
 public/static/jquery
 public/static/bootswatch
-data/
 error_log
 log/
 logs/
@@ -38,6 +37,10 @@ ext/
 target/
 vendor/
 coverage/
+gradle/
+gradlew
+gradlew.bat
+*.launch
 rpmbuild/
 out/
 build/
