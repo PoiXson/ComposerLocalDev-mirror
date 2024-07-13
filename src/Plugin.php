@@ -34,17 +34,18 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 		$this->io = $io;
 		$this->repoManager = $composer->getRepositoryManager();
 		// load config
-		$config_path = '';
+		$config_path = null;
 		for ($depth=0; $depth<3; $depth++) {
 			$config_path = \str_repeat('../', $depth).self::LOCAL_DEV_CONFIG;
 			if (\file_exists($config_path))
 				break;
-			$config_path = '';
+			$config_path = null;
 		}
 		if (empty($config_path))
 			$depth = 0;
 		$this->config = new LocalDev_Config($config_path, $depth);
-		$this->config->load();
+		if ($this->config->load())
+			$this->is_dev = true;
 		if ($this->isDev()) {
 			$this->info('<info>Development mode</info>');
 			$this->debug('Found localdev file: '.$this->config->getConfigPath());
@@ -177,6 +178,7 @@ class Plugin implements PluginInterface, EventSubscriberInterface {
 
 
 	public function isDev(): bool {
+		if ($this->is_dev === true) return true;
 		if ($this->is_dev === null)
 			$this->is_dev = $this->_isDev();
 		return ($this->is_dev === true);
@@ -287,23 +289,22 @@ class LocalDev_Config {
 
 
 
-	public function load(): void {
+	public function load(): bool {
 		$this->paths = [];
-		if (empty($this->config_file))
-			return;
-		if ( ! \is_file($this->config_file) )
-			return;
-		$data = \file_get_contents($this->config_file);
-		if ($data === false)
-			return;
-		$array = \json_decode(json: $data, associative: true);
-		if ($array === false)
-			return;
-		if (isset($array['paths'])) {
-			foreach ($array['paths'] as $namespace => $dev_path) {
-				$this->paths[$namespace] = \str_repeat('../', $this->depth).$dev_path;
+		if (!empty($this->config_file)
+		&& \is_file($this->config_file)) {
+			$data = \file_get_contents($this->config_file);
+			if ($data !== false) {
+				$array = \json_decode(json: $data, associative: true);
+				if ($array !== false
+				&& isset($array['paths'])) {
+					foreach ($array['paths'] as $namespace => $dev_path)
+						$this->paths[$namespace] = \str_repeat('../', $this->depth).$dev_path;
+					return true;
+				}
 			}
 		}
+		return false;
 	}
 
 
