@@ -3,7 +3,7 @@
 	"description": "Symlink vendor data to your local workspace",
 	"type":        "composer-plugin",
 	"homepage":    "https://poixson.com/",
-	"license":     "GPL-3.0",
+	"license":     "AGPLv3+ADD-PXN-V1",
 	"keywords": [
 		"dev", "symlink", "local", "workspace"
 	],
